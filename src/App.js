@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Button} from 'react-bootstrap';
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
+import Login from './components/Login.js';
+import EmployeeDirectory from './components/EmployeeDirectory.js';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+  state = {
+    isLoggedIn: false
+  };
+
+  render() {
+  const PrivateRoute = ({loggedIn, ...props}) => {
+    console.log(loggedIn);
+    return loggedIn?<Route {...props}/> : <Redirect to="/login"/>
+  };
+    return (
+      <div className="employee">
+        <Router>
+          <Switch>
+            <Route path="/" component={Login}></Route>
+            <PrivateRoute loggedIn={this.state.isLoggedIn} path="/" component={EmployeeDirectory}/>
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
 }
 
 export default App;
